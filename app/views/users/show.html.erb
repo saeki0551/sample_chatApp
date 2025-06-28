@@ -1,0 +1,15 @@
+<%= flash[:reaction] %>
+ <hr>
+<% if @user==current_user %>
+    <p>あなたのページ</p>
+    <%= @user.email %>
+<% else %>
+    <p>ユーザー詳細ページ</p>
+    <%= @user.email %>
+    <div>
+    <%=link_to "お気に入り！", "#", data: { "turbo-method": :post} %>
+
+    <%=link_to "微妙かも", "#", data: { "turbo-method": :post }  %>
+    </div>
+
+<% end %>
