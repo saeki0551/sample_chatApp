@@ -7,9 +7,9 @@
     <p>ユーザー詳細ページ</p>
     <%= @user.email %>
     <div>
-    <%=link_to "お気に入り！", "#", data: { "turbo-method": :post} %>
+        <%=link_to "お気に入り！", likes_path({user_id:@user.id,reaction: "like"}), data: { "turbo-method": :post} %>
 
-    <%=link_to "微妙かも", "#", data: { "turbo-method": :post }  %>
+        <%=link_to "微妙かも", likes_path({user_id:@user.id,reaction: "dislike"}), data: { "turbo-method": :post }  %>
     </div>
 
 <% end %>
