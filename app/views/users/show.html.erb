@@ -6,10 +6,22 @@
 <% else %>
     <p>ユーザー詳細ページ</p>
     <%= @user.email %>
-    <div>
-    <%=link_to "お気に入り！", "#", data: { "turbo-method": :post} %>
 
-    <%=link_to "微妙かも", "#", data: { "turbo-method": :post }  %>
+    
+    <div>
+    <%=link_to "お気に入り！", likes_path({user_id:@user.id,reaction: "0"}), data: { "turbo-method": :post} %>
+    
+    <%=link_to "微妙かも", likes_path({user_id:@user.id,reaction: "1"}), data: { "turbo-method": :post }  %>
     </div>
 
+    <% if @like.present? %>
+        <p>このユーザーに対してのあなたの評価</p>
+        <% if @like.status == 0 %>
+            <p>素敵！！！</p>
+        <% else %>
+            <p>微妙。。。</p>
+        <% end %>
+    <% end %>
+
+    <%= link_to '戻る', users_path %>
 <% end %>

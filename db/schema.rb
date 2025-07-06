@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_24_093054) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_02_085923) do
+  create_table "likes", force: :cascade do |t|
+    t.integer "to_user_id", null: false
+    t.integer "from_user_id", null: false
+    t.integer "status", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["from_user_id"], name: "index_likes_on_from_user_id"
+    t.index ["to_user_id"], name: "index_likes_on_to_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -23,4 +33,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_24_093054) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "likes", "users", column: "from_user_id"
+  add_foreign_key "likes", "users", column: "to_user_id"
 end
