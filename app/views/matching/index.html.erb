@@ -1,0 +1,17 @@
+<%
+=begin
+%>
+
+<p>マッチング中のお相手 <%= @matching_users.size %>人</p>
+
+<%
+=end
+%>
+
+<% @matching_users.each do |matching_user| %>
+    <ul>
+        <li>
+            <%= link_to matching_user.email,"#" %>
+        </li>
+    </ul>
+<% end %>

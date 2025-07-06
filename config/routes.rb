@@ -15,7 +15,11 @@ Rails.application.routes.draw do
     root 'top#index'
 
     resources :users, only: [:index, :show]
+
     resources :likes, only: [:create]
-    
     get '/likes', to: 'likes#create'
+    get '/users/:id/:reaction', to: 'users#show'
+
+    resources :matching, only: [:index]
+
 end
