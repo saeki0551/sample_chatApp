@@ -21,5 +21,10 @@ Rails.application.routes.draw do
     get '/users/:id/:reaction', to: 'users#show'
 
     resources :matching, only: [:index]
+    
+    resources :chat_rooms, only: [:create, :show]
+
+    resources :chat_messages, only: [:create]
+
 
 end
