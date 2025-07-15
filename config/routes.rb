@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     resources :matching, only: [:index]
     
     resources :chat_rooms, only: [:create, :show]
+    get '/chat_rooms/:user_id/create', to: 'chat_rooms#create'
 
     resources :chat_messages, only: [:create]
 

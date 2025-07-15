@@ -2,3 +2,18 @@
 <p>あなた：<%= current_user.email %></p>
 <p>お相手：<%= @chat_room_user.email %>さん</p>
 
+<% @chat_messages.each do |chat_message| %>
+        <hr>
+        <div>
+            <li>内容：<%= chat_message.content %></li>
+            <li><%= chat_message.created_at %>に送信済み</li>
+            <li><%= chat_message.user.email%>さんのメッセージ</li>
+        </div>
+        <hr>
+<% end %>
+
+<%= form_with model: @chat_message do |f| %>
+    <%= f.hidden_field :chat_room_id, value: @chat_room.id %>
+    <%= f.text_area :content %>
+    <%= f.submit %>
+<% end %>

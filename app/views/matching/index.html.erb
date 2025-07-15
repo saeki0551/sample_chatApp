@@ -11,7 +11,9 @@
 <% @matching_users.each do |matching_user| %>
     <ul>
         <li>
-            <%= link_to matching_user.email, chat_room_path(:id => matching_user.id) %>
+            <%# <%= link_to matching_user.email, chat_room_path(:id => matching_user.id) %> 
+            <%= link_to matching_user.email, "/chat_rooms/#{matching_user.id}/create" %>
+
         </li>
     </ul>
 <% end %>

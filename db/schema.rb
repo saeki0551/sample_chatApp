@@ -12,8 +12,13 @@
 
 ActiveRecord::Schema[8.0].define(version: 2025_07_12_014110) do
   create_table "chat_messages", force: :cascade do |t|
+    t.integer "chat_room_id", null: false
+    t.integer "user_id", null: false
+    t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["chat_room_id"], name: "index_chat_messages_on_chat_room_id"
+    t.index ["user_id"], name: "index_chat_messages_on_user_id"
   end
 
   create_table "chat_room_users", force: :cascade do |t|
@@ -53,6 +58,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_12_014110) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "chat_messages", "chat_rooms"
+  add_foreign_key "chat_messages", "users"
   add_foreign_key "chat_room_users", "chat_rooms"
   add_foreign_key "chat_room_users", "users"
   add_foreign_key "likes", "users", column: "from_user_id"
