@@ -64,3 +64,4 @@ end
 
 gem 'devise'
 gem 'pg'
+gem 'pry'
