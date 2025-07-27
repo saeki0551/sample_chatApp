@@ -22,7 +22,7 @@ class GroupsController < ApplicationController
     def create
         @group = Group.new(group_params)
         if @group.save
-            redirect_to groups_url, notice: 'グループを作成しました。'
+          redirect_to groups_path(id: @group.user_ids)
         else
             render :new
         end
