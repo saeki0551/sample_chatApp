@@ -10,14 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_19_035752) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_05_042920) do
   create_table "chat_messages", force: :cascade do |t|
-    t.integer "chat_room_id", null: false
+    t.integer "chat_room_id"
+    t.integer "group_id"
     t.integer "user_id", null: false
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["chat_room_id"], name: "index_chat_messages_on_chat_room_id"
+    t.index ["group_id"], name: "index_chat_messages_on_group_id"
     t.index ["user_id"], name: "index_chat_messages_on_user_id"
   end
 
@@ -45,10 +47,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_19_035752) do
   end
 
   create_table "groups", force: :cascade do |t|
-    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_groups_on_name", unique: true
+    t.string "name"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -75,6 +76,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_19_035752) do
   end
 
   add_foreign_key "chat_messages", "chat_rooms"
+  add_foreign_key "chat_messages", "groups"
   add_foreign_key "chat_messages", "users"
   add_foreign_key "chat_room_users", "chat_rooms"
   add_foreign_key "chat_room_users", "users"

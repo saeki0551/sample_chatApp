@@ -1,35 +1,43 @@
 class GroupsController < ApplicationController
-     before_action :set_group, only: [:edit, :update]
+  before_action :set_group, only: [:edit, :update]
 
-    def index
-        @group_lists = Group.all
-        @group_joining = GroupUser.where(user_id: current_user.id)
-        @group_lists_none = "グループに参加していません。"
-        # Railsで配列をActive Record Relationに変換したい 配列をUserオブジェクトとして扱いたい
-        #paramsは文字列で取得するので、オブジェクトは取得できない
-        @matching_users = User.find(params[:id])
-        # @matching_users = User.where(id: params[:matching_users])
-        # binding.pry
-    end
+  def index
+    @group_lists = Group.all
+    @group_joining = GroupUser.where(user_id: current_user.id)
+    @group_lists_none = "グループに参加していません。"
+    # Railsで配列をActive Record Relationに変換したい 配列をUserオブジェクトとして扱いたい
+    #paramsは文字列で取得するので、オブジェクトは取得できない
+    # @matching_users = User.find(params[:id])
 
-    def new
-        @group = Group.new
-        # @group.users << current_user
-        @matching_users = User.find(params[:id])
+    # binding.pry
+  end
 
-    end
+  def new
+    @group = Group.new
+    # @group.users << current_user
+    # @matching_users = User.find(params[:id])
+    got_like_users_ids = Like.where(to_user_id: current_user.id, status: 0).pluck(:from_user_id)    
+    @matching_users = Like.where(to_user_id: got_like_users_ids, from_user_id: current_user.id, status: 0).map do |like|
+    like.to_user
+    end  
+  end
     
     def create
-        @group = Group.new(group_params)
-        if @group.save
-          redirect_to groups_path(id: @group.user_ids)
-        else
-            render :new
-        end
+      @group = Group.new(group_params)
+    #   binding.pry
+      if @group.save
+        redirect_to groups_path
+      else
+        render :new
+      end
     end
 
     def show
         @group = Group.find(params[:id])
+        @group_users = GroupUser.where(group_id: @group.id)
+        # binding.pry
+        @chat_message = ChatMessage.new
+        @chat_messages = ChatMessage.where(group: @group)
     end
 
     def edit
@@ -58,6 +66,8 @@ class GroupsController < ApplicationController
         end
 
         def group_params
-            params.require(:group).permit(:name, user_ids: [])
+            current_user_id = params[:group][:user_ids]
+            current_user_id.push(current_user.id)
+            params.require(:group).permit(:name, user_ids: []).merge(user_ids: current_user_id)
         end
 end

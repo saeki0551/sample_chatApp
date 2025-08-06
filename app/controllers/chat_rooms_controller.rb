@@ -11,7 +11,7 @@ class ChatRoomsController < ApplicationController
         chat_room = ChatRoomUser.find_by(chat_room_id: current_users_chat_rooms, user_id: params[:user_id])
         #条件に合うチャットルームが存在しない場合は、チャットルームを新規作成。
         if chat_room.blank? 
-            chat_room=ChatRoom.create
+            chat_room = ChatRoom.create
             ChatRoomUser.create(user_id: current_user.id, chat_room_id: chat_room.id)
             ChatRoomUser.create(user_id: params[:user_id], chat_room_id: chat_room.id)  
         end
