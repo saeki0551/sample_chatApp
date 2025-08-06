@@ -12,20 +12,21 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-    root 'top#index'
+  root 'top#index'
 
-    resources :users, only: [:index, :show]
+  resources :users, only: [:index, :show]
 
-    resources :likes, only: [:create]
-    get '/likes', to: 'likes#create'
-    get '/users/:id/:reaction', to: 'users#show'
+  resources :likes, only: [:create]
+  get '/likes', to: 'likes#create'
+  get '/users/:id/:reaction', to: 'users#show'
 
-    resources :matching, only: [:index]
-    
-    resources :chat_rooms, only: [:create, :show]
-    get '/chat_rooms/:user_id/create', to: 'chat_rooms#create'
+  resources :matching, only: [:index, :new]
 
-    resources :chat_messages, only: [:create]
+  resources :chat_rooms, only: [:create, :show]
+  get '/chat_rooms/:user_id/create', to: 'chat_rooms#create'
 
+  resources :groups, only: [:index, :new, :create, :show, :edit, :update, :destroy]
+  resources :chat_messages, only: [:create]
+  get 'groups_path/:id', to: 'groups#index'
 
 end

@@ -23,8 +23,11 @@
 
   <body>
     <% if user_signed_in? %>
+      <p>ログイン中のユーザー名： <%= current_user.email %></p>
       <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
+      <%= link_to "ユーザー一覧", users_path %>
       <%= link_to "マッチング中のユーザー", matching_index_path %>
+      <%= link_to "グループチャットを始める", groups_path %>
     <% else %>
       <h2>ようこそチャットサイトへ</h2>
       <%= link_to "アカウント作成", new_user_registration_path %></br>

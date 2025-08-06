@@ -11,6 +11,13 @@ class MatchingController < ApplicationController
         @matching_users=Like.where(to_user_id: got_like_users_ids, from_user_id: current_user.id, status: 0).map do |like|
             like.to_user
         end
-        # @user=User.find(current_user.id)
+
+        @matching_users_id = @matching_users.pluck(:id)
+        # binding.pry
+        
+    end
+    
+    def new
+        redirect_to groups_path(matching_users: @matching_users)
     end
 end

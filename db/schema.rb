@@ -10,14 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_12_014110) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_05_042920) do
   create_table "chat_messages", force: :cascade do |t|
-    t.integer "chat_room_id", null: false
+    t.integer "chat_room_id"
+    t.integer "group_id"
     t.integer "user_id", null: false
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["chat_room_id"], name: "index_chat_messages_on_chat_room_id"
+    t.index ["group_id"], name: "index_chat_messages_on_group_id"
     t.index ["user_id"], name: "index_chat_messages_on_user_id"
   end
 
@@ -33,6 +35,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_12_014110) do
   create_table "chat_rooms", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "group_users", force: :cascade do |t|
+    t.integer "group_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_group_users_on_group_id"
+    t.index ["user_id"], name: "index_group_users_on_user_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -59,9 +76,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_12_014110) do
   end
 
   add_foreign_key "chat_messages", "chat_rooms"
+  add_foreign_key "chat_messages", "groups"
   add_foreign_key "chat_messages", "users"
   add_foreign_key "chat_room_users", "chat_rooms"
   add_foreign_key "chat_room_users", "users"
+  add_foreign_key "group_users", "groups"
+  add_foreign_key "group_users", "users"
   add_foreign_key "likes", "users", column: "from_user_id"
   add_foreign_key "likes", "users", column: "to_user_id"
 end
