@@ -28,5 +28,10 @@ Rails.application.routes.draw do
   resources :groups, only: [:index, :new, :create, :show, :edit, :update, :destroy]
   resources :chat_messages, only: [:create]
   get 'groups_path/:id', to: 'groups#index'
+  get 'groups/:id/editInvite', to: 'groups#editInvite'
+  get 'groups/:id/editDestroy', to: 'groups#editDestroy'
+  get 'groups/:id/destroy', to: 'groups#destroy'
 
+  patch '/editInviteUpdate', to: 'groups#editInviteUpdate'
+  patch '/editDestroyUpdate', to: 'groups#editDestroyUpdate'
 end

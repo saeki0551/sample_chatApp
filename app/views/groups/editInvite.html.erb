@@ -1,0 +1,9 @@
+<h2>グループチャットメンバー追加</h2>
+<%= form_with model:@group, url: "/editInviteUpdate" do |f| %>
+  <p>新たに追加する人をチェックしてください</p>
+  <%= f.collection_check_boxes :user_ids, @invite_group_users, :id, :email %></br>
+  
+  <%= f.hidden_field :id, value: @group.id %>
+
+  <%= f.submit "メンバーを追加する" %>
+<% end %>

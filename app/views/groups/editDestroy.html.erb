@@ -1,0 +1,12 @@
+<h2>グループチャットメンバー退会</h2>
+<%= form_with model:@group, url: "/editDestroyUpdate" do |f| %>
+  <p>退会させる人をチェックしてください</p>
+  <%= f.collection_check_boxes :user_ids, @destroy_group_users, :id, :email, { checked:false } %></br> 
+
+  <%= f.hidden_field :id, value: @group.id %>
+
+  <%= f.submit "メンバーを退会させる" %>
+<% end %>
+
+
+ 

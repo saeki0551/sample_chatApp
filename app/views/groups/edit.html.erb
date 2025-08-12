@@ -1,0 +1,9 @@
+<h2>グループチャット編集</h2>
+<%= form_with model:@group do |f| %>
+  <%= f.label :name, 'グループ名' %>
+  <%= f.text_field :name, value: @group.name %>
+
+  <%= f.hidden_field :user_ids, value: current_user.id %>
+
+  <%= f.submit "編集する" %>
+<% end %>

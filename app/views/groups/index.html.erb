@@ -36,7 +36,9 @@
                 <%= link_to "/groups/#{list.id}" do %>
                   <%= list.name %>(<%= list.user_ids.count %>)
                   <%= link_to '編集', edit_group_path(list.id), method: :get %>
-                  <%= link_to '削除', "/groups/#{list.id}", method: :delete %>
+                  <%= link_to '削除', "/groups/#{list.id}/destroy", method: :delete %>
+                  <%= link_to 'メンバーを追加する', "/groups/#{list.id}/editInvite", method: :get %>
+                  <%= link_to 'メンバーを削除する', "/groups/#{list.id}/editDestroy", method: :get %>
                 <% end %>
               </li>
             <%# <% end %>
@@ -46,5 +48,4 @@
     </div>
 </div>
 
-<%= link_to "戻る", matching_index_path %>
 

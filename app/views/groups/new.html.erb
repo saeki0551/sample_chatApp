@@ -5,7 +5,7 @@
     <div class="gtoup-new-form-name">
       <%= f.label :name, 'グループ名' %>
       <%= f.text_field :name, class: 'form-control' %></br>
-      <p>追加する人をチェックしてください</p>
+      <p>メンバーにする人をチェックしてください</p>
       <%= f.collection_check_boxes :user_ids, @matching_users, :id, :email %></br>
     </div>
     <%= f.submit '新規作成', class: "btn btn-primary" %>
