@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_05_042920) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_12_054210) do
+  create_table "blocks", force: :cascade do |t|
+    t.integer "block_user_id"
+    t.integer "blocked_user_id"
+    t.integer "user_id" #いらない
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_blocks_on_user_id" #おそらくいらない
+  end
+
   create_table "chat_messages", force: :cascade do |t|
     t.integer "chat_room_id"
     t.integer "group_id"
@@ -75,6 +84,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_042920) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "blocks", "users"
   add_foreign_key "chat_messages", "chat_rooms"
   add_foreign_key "chat_messages", "groups"
   add_foreign_key "chat_messages", "users"

@@ -1,27 +1,34 @@
-<%= flash[:reaction] %>
- <hr>
 <% if @user==current_user %>
-    <p>あなたのページ</p>
-    <%= @user.email %>
+  <p>あなたのページ</p>
+  <%= @user.email %>
 <% else %>
+  <% if @blocked.present? %>
+    <p>あなたはブロックされています。</p>
+  <% else %>
     <p>ユーザー詳細ページ</p>
     <%= @user.email %>
 
     
     <div>
-    <%=link_to "お気に入り！", likes_path({user_id:@user.id,reaction: "0"}), data: { "turbo-method": :post} %>
-    
-    <%=link_to "微妙かも", likes_path({user_id:@user.id,reaction: "1"}), data: { "turbo-method": :post }  %>
+      <%=link_to "お気に入り！", likes_path({user_id:@user.id,reaction: "0"}), data: { "turbo-method": :post} %>
+      <%=link_to "微妙かも", likes_path({user_id:@user.id,reaction: "1"}), data: { "turbo-method": :post }  %>
     </div>
 
     <% if @like.present? %>
-        <p>このユーザーに対してのあなたの評価</p>
-        <% if @like.status == 0 %>
-            <p>素敵！！！</p>
-        <% else %>
-            <p>微妙。。。</p>
-        <% end %>
+      <p>このユーザーに対してのあなたの評価</p>
+      <% if @like.status == 0 %>
+        <p>素敵！！！</p>
+      <% else %>
+        <p>微妙。。。</p>
+      <% end %>
+    <% end %>
+
+    <% if @block.present? %>
+      <%=link_to "ブロック解除", controller: "blocks", action: "destroy" %></br>
+    <% else %>
+      <%=link_to "ブロックする", user_blocks_path(user_id: @user.id) %></br>
     <% end %>
 
     <%= link_to '戻る', users_path %>
+  <% end %>
 <% end %>
