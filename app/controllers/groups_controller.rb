@@ -35,6 +35,8 @@ class GroupsController < ApplicationController
     def show
         @group = Group.find(params[:id])
         @group_users = GroupUser.where(group_id: @group.id)
+        @group_user_ids = GroupUser.where(group_id: @group.id).pluck(:user_id)
+        @group_user_ids = User.where(id: @group_user_ids)
         # binding.pry
         @chat_message = ChatMessage.new
         @chat_messages = ChatMessage.where(group: @group)
@@ -59,7 +61,16 @@ class GroupsController < ApplicationController
       @group = Group.find(params[:id])
       @group_users = GroupUser.where(group_id: @group.id)
       @group_user_ids = @group_users.pluck(:user_id)
-      @invite_group_users = User.where.not(id: @group_user_ids)
+      @blocked_group_users = User.where.not(id: @group_user_ids).pluck(:id)
+      blocked_user = Block.where(blocked_user_id: @blocked_group_users).pluck(:blocked_user_id)
+      # binding.pry
+      blocked_user = User.where(id: blocked_user)
+      if blocked_user.present?
+        @invite_group_users = User.where.not(id: @group_user_ids)
+        @invite_group_users = @invite_group_users - blocked_user
+      else
+        @invite_group_users = User.where.not(id: @group_user_ids)
+      end
     end
 
     def editInviteUpdate
@@ -114,7 +125,6 @@ class GroupsController < ApplicationController
 
         def edit_invite_group_params
           invite_group_users = User.where(id: params[:group][:user_ids]).pluck(:id)
-
           group = Group.find(params[:group][:id])
           group_user_ids = GroupUser.where(group_id: group.id)
           group_user_ids = group_user_ids.pluck(:user_id)

@@ -21,13 +21,16 @@ class ChatRoomsController < ApplicationController
 
     def show
         #フォームに渡すために、モデルのインスタンスを作成。
-        @chat_message=ChatMessage.new
+        @chat_message = ChatMessage.new
         #受け取ったクエリパラメータでチャットルームオブジェクトを取得。
-        @chat_room=ChatRoom.find(params[:id])
+        @chat_room = ChatRoom.find(params[:id])
         #表示するチャットルーム内でのメッセージを全件配列で取得。
-        @chat_messages=ChatMessage.where(chat_room: @chat_room)
+        @chat_messages = ChatMessage.where(chat_room_id: @chat_room.id)
         #チャット相手ユーザーの取得。
-        @chat_room_user=@chat_room.chat_room_users.where.not(user_id: current_user.id)[0].user
-
+        @chat_room_user = @chat_room.chat_room_users.where.not(user_id: current_user.id).pluck(:user_id)
+        @chat_room_user = User.find_by(id: @chat_room_user) #findかfind_byかwhereか
+        @blocked_user = Block.where(blocked_user_id: @chat_room_user.id).pluck(:blocked_user_id)
+        @blocked_user = User.find_by(id: @blocked_user)
+        # binding.pry
     end
 end

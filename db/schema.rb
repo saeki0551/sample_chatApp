@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_12_054210) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_20_052325) do
   create_table "blocks", force: :cascade do |t|
     t.integer "block_user_id"
     t.integer "blocked_user_id"
-    t.integer "user_id" #いらない
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_blocks_on_user_id" #おそらくいらない
+    t.index ["user_id"], name: "index_blocks_on_user_id"
   end
 
   create_table "chat_messages", force: :cascade do |t|
@@ -27,6 +27,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_12_054210) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "block_judgment", default: false, null: false
     t.index ["chat_room_id"], name: "index_chat_messages_on_chat_room_id"
     t.index ["group_id"], name: "index_chat_messages_on_group_id"
     t.index ["user_id"], name: "index_chat_messages_on_user_id"
