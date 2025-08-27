@@ -29,7 +29,7 @@ class ChatRoomsController < ApplicationController
         #チャット相手ユーザーの取得。
         @chat_room_user = @chat_room.chat_room_users.where.not(user_id: current_user.id).pluck(:user_id)
         @chat_room_user = User.find_by(id: @chat_room_user) #findかfind_byかwhereか
-        @blocked_user = Block.where(blocked_user_id: @chat_room_user.id).pluck(:blocked_user_id)
+        @blocked_user = Block.where(block_user_id: @chat_room_user.id, blocked_user_id: current_user).pluck(:blocked_user_id)
         @blocked_user = User.find_by(id: @blocked_user)
         # binding.pry
     end

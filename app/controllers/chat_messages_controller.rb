@@ -4,11 +4,12 @@ class ChatMessagesController < ApplicationController
       #フォームから受け取った値でチャットルームオブジェクトを取得
       @chat_room = ChatRoom.find(params[:chat_message][:chat_room_id])
       #フォームから受け取った値で、チャットメッセージオブジェクトを作成
-      if params[:blocked_chat_message_id].blank?
+      if params[:chat_message][:blocked_chat_message] == "true"
         @chat_message = ChatMessage.new(user_id: current_user.id, chat_room_id: @chat_room.id, content: params[:chat_message][:content], block_judgment: true)
       else
         @chat_message = ChatMessage.new(user_id: current_user.id, chat_room_id: @chat_room.id, content: params[:chat_message][:content], block_judgment: false)
       end
+      # binding.pry
       #保存に成功したら、フラッシュメッセージを表示し、チャットルームへリダイレクトする。
       if @chat_message.save
           # binding.pry
