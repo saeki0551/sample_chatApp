@@ -31,7 +31,7 @@
       <div class="group-list">
         <ul class="group-list-table">
           <% @group_lists.each do |list| %>
-            <%# <% if list.user_ids.include?(current_user.id) %>
+            <% if list.user_ids.include?(current_user.id) %>
               <li class="group-list-table-each-group">
                 <%= link_to "/groups/#{list.id}" do %>
                   <%= list.name %>(<%= list.user_ids.count %>)
@@ -41,7 +41,7 @@
                   <%= link_to 'メンバーを削除する', "/groups/#{list.id}/editDestroy", method: :get %>
                 <% end %>
               </li>
-            <%# <% end %>
+            <% end %>
           <% end %>
         </ul>
       </div>

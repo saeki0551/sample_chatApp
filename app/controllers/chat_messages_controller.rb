@@ -4,7 +4,12 @@ class ChatMessagesController < ApplicationController
       #フォームから受け取った値でチャットルームオブジェクトを取得
       @chat_room = ChatRoom.find(params[:chat_message][:chat_room_id])
       #フォームから受け取った値で、チャットメッセージオブジェクトを作成
-      @chat_message = ChatMessage.new(user_id: current_user.id, chat_room_id: @chat_room.id, content: params[:chat_message][:content])
+      if params[:chat_message][:blocked_chat_message] == "true"
+        @chat_message = ChatMessage.new(user_id: current_user.id, chat_room_id: @chat_room.id, content: params[:chat_message][:content], block_judgment: true)
+      else
+        @chat_message = ChatMessage.new(user_id: current_user.id, chat_room_id: @chat_room.id, content: params[:chat_message][:content], block_judgment: false)
+      end
+      # binding.pry
       #保存に成功したら、フラッシュメッセージを表示し、チャットルームへリダイレクトする。
       if @chat_message.save
           # binding.pry
@@ -18,7 +23,15 @@ class ChatMessagesController < ApplicationController
       end
     else
       @group = Group.find(params[:chat_message][:group_id])
-      @chat_message = ChatMessage.new(user_id: current_user.id, group_id: @group.id, content: params[:chat_message][:content])
+      integers = params[:chat_message][:group_user_ids].map(&:to_i)
+      if integers.include?(current_user.id)
+        # binding.pry
+        @chat_message = ChatMessage.new(user_id: current_user.id, group_id: @group.id, content: params[:chat_message][:content])
+      else
+        # binding.pry
+        flash[:alert] = "あなたはこのグループに所属していません。"
+        redirect_to group_path(@group)
+      end
       if @chat_message.save
         # binding.pry
         flash[:notice] = "メッセージの送信に成功しました。"

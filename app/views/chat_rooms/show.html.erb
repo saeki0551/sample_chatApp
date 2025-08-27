@@ -1,19 +1,39 @@
 <p>Chatroomへようこそ!</p>
 <p>あなた：<%= current_user.email %></p>
 <p>お相手：<%= @chat_room_user.email %>さん</p>
+<%# <p>ブロックしたユーザー：<%= @blocked_user.id %></p> 
 
 <% @chat_messages.each do |chat_message| %>
-        <hr>
-        <div>
-            <li>内容：<%= chat_message.content %></li>
-            <li><%= chat_message.created_at %>に送信済み</li>
-            <li><%= chat_message.user.email%>さんのメッセージ</li>
-        </div>
-        <hr>
+  <% if @blocked_user == current_user %>
+    <hr>
+    <div>
+      <li>内容：<%= chat_message.content %></li>
+      <li><%= chat_message.created_at %>に送信済み</li>
+      <li><%= chat_message.user.email%>さんのメッセージ</li>
+      <li>判定：<%= chat_message.block_judgment %></li>
+    </div>
+    <hr>
+  <% else %>
+    <% if chat_message.block_judgment.blank? %>
+      <hr>
+      <div>
+        <li>内容：<%= chat_message.content %></li>
+        <li><%= chat_message.created_at %>に送信済み</li>
+        <li><%= chat_message.user.email%>さんのメッセージ</li>
+        <li>判定：<%= chat_message.block_judgment %>という判定</li>
+      </div>
+      <hr>
+    <% else %>
+      <%# 非表示メッセージ %> <!-- -->
+    <% end %>
+  <% end %>
 <% end %>
 
 <%= form_with model: @chat_message do |f| %>
     <%= f.hidden_field :chat_room_id, value: @chat_room.id %>
+    <% if @blocked_user == current_user %>
+    <%= f.hidden_field :blocked_chat_message, value: true %>
+    <% end %>
     <%= f.text_area :content %>
     <%= f.submit %>
 <% end %>

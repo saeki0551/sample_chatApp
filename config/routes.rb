@@ -14,8 +14,12 @@ Rails.application.routes.draw do
   # root "posts#index"
   root 'top#index'
 
-  resources :users, only: [:index, :show]
-
+  resources :users, only: [:index, :show] do
+    resources :blocks, only: [:create, :destroy]
+  end
+  get 'users/:id/blocks', to: 'blocks#create'
+  get 'users/blocks/:id/destroy', to: 'blocks#destroy'
+  
   resources :likes, only: [:create]
   get '/likes', to: 'likes#create'
   get '/users/:id/:reaction', to: 'users#show'
@@ -34,4 +38,5 @@ Rails.application.routes.draw do
 
   patch '/editInviteUpdate', to: 'groups#editInviteUpdate'
   patch '/editDestroyUpdate', to: 'groups#editDestroyUpdate'
+
 end
