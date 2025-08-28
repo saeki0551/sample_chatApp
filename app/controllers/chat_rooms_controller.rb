@@ -12,11 +12,17 @@ class ChatRoomsController < ApplicationController
         #条件に合うチャットルームが存在しない場合は、チャットルームを新規作成。
         if chat_room.blank? 
             chat_room = ChatRoom.create
+            # chat_room1 = ChatRoomUser.create(user_id: current_user.id, chat_room_id: chat_room.id)
+            # chat_room2 = ChatRoomUser.create(user_id: params[:user_id], chat_room_id: chat_room.id)  
             ChatRoomUser.create(user_id: current_user.id, chat_room_id: chat_room.id)
             ChatRoomUser.create(user_id: params[:user_id], chat_room_id: chat_room.id)  
+            chat_room_id = chat_room.id
+            # binding.pry
+            redirect_to chat_room_path(chat_room_id)
+        else
+            #chat_rooms/show.html.erbへ遷移
+            redirect_to chat_room_path(chat_room.chat_room_id)
         end
-        #chat_rooms/show.html.erbへ遷移
-        redirect_to chat_room_path(chat_room.chat_room_id)
     end
 
     def show
