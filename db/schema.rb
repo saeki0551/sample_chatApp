@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_20_052325) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_31_092109) do
   create_table "blocks", force: :cascade do |t|
     t.integer "block_user_id"
     t.integer "blocked_user_id"
@@ -52,6 +52,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_052325) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "owner"
     t.index ["group_id"], name: "index_group_users_on_group_id"
     t.index ["user_id"], name: "index_group_users_on_user_id"
   end
@@ -60,6 +61,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_052325) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.integer "owner"
   end
 
   create_table "likes", force: :cascade do |t|

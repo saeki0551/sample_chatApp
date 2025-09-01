@@ -5,6 +5,7 @@ class GroupsController < ApplicationController
     @group_lists = Group.all
     @group_joining = GroupUser.where(user_id: current_user.id)
     @group_lists_none = "グループに参加していません。"
+    # binding.pry
     # Railsで配列をActive Record Relationに変換したい 配列をUserオブジェクトとして扱いたい
     #paramsは文字列で取得するので、オブジェクトは取得できない
     # @matching_users = User.find(params[:id])
@@ -24,7 +25,7 @@ class GroupsController < ApplicationController
     
     def create
       @group = Group.new(create_group_params)
-    #   binding.pry
+      # binding.pry
       if @group.save
         redirect_to groups_path
       else
@@ -37,9 +38,9 @@ class GroupsController < ApplicationController
         @group_users = GroupUser.where(group_id: @group.id)
         @group_user_ids = GroupUser.where(group_id: @group.id).pluck(:user_id)
         @group_user_ids = User.where(id: @group_user_ids)
-        # binding.pry
         @chat_message = ChatMessage.new
         @chat_messages = ChatMessage.where(group: @group)
+        # binding.pry
     end
 
     def edit
@@ -116,7 +117,8 @@ class GroupsController < ApplicationController
         def create_group_params
           group_user_ids = params[:group][:user_ids]
           group_user_ids.push(current_user.id)
-          params.require(:group).permit(:name, user_ids: []).merge(user_ids: group_user_ids)
+          params.require(:group).permit(:name, :owner, user_ids:[]).merge(user_ids: group_user_ids, owner: current_user.id)
+          # binding.pry
         end
 
         def edit_group_params
